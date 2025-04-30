@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Carcelario</title>
+    <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .hidden {
+      display: none !important;
+    }
+    #login, #adminPanel, #data {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sistema de Gestión Carcelaria</h1>
+  <div id="login">
+    <h2>Iniciar Sesión</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button type="submit">Iniciar Sesión</button>
+    </form>
+    <p id="error" style="color: red;"></p>
+  </div>
+  <div id="adminPanel" class="hidden">
+    <h2>Panel de Administración</h2>
+    <h3>Crear Guardia</h3>
+    <form id="createUserForm">
+      <input type="text" id="newUsername" placeholder="Nombre de usuario" required>
+      <input type="password" id="newPassword" placeholder="Contraseña" required>
+      <select id="newRol">
+        <option value="GUARDIA">Guardia</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+      <button type="submit">Crear Usuario</button>
+    </form>
+    <h3>Lista de Usuarios</h3>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="userList"></tbody>
+    </table>
+  </div>
+  <div id="data" class="hidden">
+    <h2>Consulta de Interno</h2>
+    <input type="number" id="inputId" placeholder="Ingrese el TD del preso">
+    <button onclick="consultar()">Consultar</button>
+    <h3>Resultado:</h3>
+    <p id="resultado"></p>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
