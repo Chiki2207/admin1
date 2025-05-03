@@ -10,6 +10,6 @@ const {
 router.post('/login', login);
 
 // Rutas privadas de autenticación
-router.post('/register', register);
+router.post('/register', verificarToken, verificarRol(['ADMIN']), register);
 
 module.exports = router; 
