@@ -77,6 +77,8 @@ const login = async (req, res) => {
 // Controlador de registro
 const register = async (req, res) => {
   const { Username, Password, Rol } = req.body;
+  const usuarioActual = req.usuario?.Username || 'SISTEMA'; // Obtener el usuario actual del token o usar 'SISTEMA' si no hay usuario
+  
   try {
     const [usuariosExistentes] = await sequelize.query(
       `SELECT * FROM usuarios WHERE Username = '${Username}'`
@@ -87,6 +89,10 @@ const register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(Password, 10);
+    
+    // Establecer el usuario actual antes de la operación
+    await sequelize.query(`SET @usuario_actual = '${usuarioActual}'`);
+    
     await sequelize.query(
       `INSERT INTO usuarios (Username, Password, Rol, Estado ) 
        VALUES ('${Username}', '${hashedPassword}', '${Rol}', 1)`
@@ -98,7 +104,6 @@ const register = async (req, res) => {
     res.status(500).json({ mensaje: "Error en el servidor" });
   }
 };
-
 
 module.exports = {
   login,

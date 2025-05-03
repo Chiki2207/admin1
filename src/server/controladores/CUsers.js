@@ -45,6 +45,7 @@ const actualizarUsuario = async (req, res) => {
   try {
     const { IdUsuario } = req.params;
     const { Username, Password, Rol, Estado } = req.body;
+    const usuarioActual = req.usuario?.Username || 'SISTEMA'; // Obtener el usuario actual del token o usar 'SISTEMA' si no hay usuario
 
     const [usuarios] = await sequelize.query(
       `SELECT * FROM usuarios WHERE IdUsuario = ${IdUsuario}`
@@ -67,6 +68,9 @@ const actualizarUsuario = async (req, res) => {
     if (Rol) datosActualizados.Rol = Rol;
     if (Estado !== undefined) datosActualizados.Estado = Estado;
 
+    // Establecer el usuario actual antes de la operación
+    await sequelize.query(`SET @usuario_actual = '${usuarioActual}'`);
+    
     await sequelize.query(
       `UPDATE usuarios 
        SET Username = '${datosActualizados.Username || usuario.Username}',
@@ -77,7 +81,6 @@ const actualizarUsuario = async (req, res) => {
                ? datosActualizados.Estado
                : usuario.Estado
            }
-           
        WHERE IdUsuario = ${IdUsuario}`
     );
 
@@ -106,6 +109,7 @@ const actualizarUsuario = async (req, res) => {
 const eliminarUsuario = async (req, res) => {
   try {
     const { IdUsuario } = req.params;
+    const usuarioActual = req.usuario?.Username || 'SISTEMA'; // Obtener el usuario actual del token o usar 'SISTEMA' si no hay usuario
 
     const [usuarios] = await sequelize.query(
       `SELECT * FROM usuarios WHERE IdUsuario = ${IdUsuario}`
@@ -117,6 +121,9 @@ const eliminarUsuario = async (req, res) => {
       });
     }
 
+    // Establecer el usuario actual antes de la operación
+    await sequelize.query(`SET @usuario_actual = '${usuarioActual}'`);
+    
     await sequelize.query(
       `DELETE FROM usuarios WHERE IdUsuario = ${IdUsuario}`
     );
@@ -135,7 +142,7 @@ const eliminarUsuario = async (req, res) => {
 
 module.exports = {
   listarUsuarios,
+  listarUsuario,
   actualizarUsuario,
   eliminarUsuario,
-  listarUsuario,
 };
