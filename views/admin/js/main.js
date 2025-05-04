@@ -4,6 +4,8 @@ function updateVisibility(isLoggedIn, isAdmin = false) {
     document.getElementById('login').classList.toggle('hidden', isLoggedIn);
     document.getElementById('data').classList.toggle('hidden', !isLoggedIn);
     document.getElementById('adminPanel').classList.toggle('hidden', !isAdmin);
+    document.getElementById('usuarios').classList.toggle('hidden', isAdmin || !isLoggedIn);
+    // Muestra 'usuarios' solo si está logueado y NO es admin
 }
 
 // Limpiar sesión y ocultar secciones al cargar la página
@@ -191,5 +193,8 @@ async function consultar() {
         console.error('Error:', err);
         resultado.innerHTML = 'Error al realizar la consulta';
     }
-} 
+}
+
+document.getElementById('btnCerrarSesion').addEventListener('click', clearSession);
+document.getElementById('btnCerrarSesionAdmin').addEventListener('click', clearSession); 
 
